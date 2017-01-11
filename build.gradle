@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 plugins {
     id 'net.ltgt.errorprone' version '0.0.8'
-    id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.4'
+    id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.6'
 }
 
 allprojects {
@@ -92,6 +92,7 @@ task clean(type: Delete) {
 
 clean {
     delete releaseDir
+//    delete wpilibVersionFile
 }
 
 task wrapper(type: Wrapper) {
