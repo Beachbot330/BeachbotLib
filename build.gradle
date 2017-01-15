@@ -15,7 +15,7 @@ allprojects {
 // already specified on the command line
 if (!hasProperty('releaseType')) {
     WPILibVersion {
-        releaseType = 'dev'
+        releaseType = 'official'
     }
 }
 
@@ -100,7 +100,6 @@ task clean(type: Delete) {
 
 clean {
     delete releaseDir
-//    delete wpilibVersionFile
 }
 
 task wrapper(type: Wrapper) {
