@@ -179,7 +179,6 @@ nbactions.xml
 *.out
 *.app
 
-
 ### CMake ###
 CMakeCache.txt
 CMakeFiles
@@ -222,3 +221,6 @@ gradle-app.setting
 
 #VSCode
 .vscode/
+
+InitializeTemplate.py
+TemplateFiles/*
