@@ -377,14 +377,6 @@ if (useDriver) {
     }
 }
 
-// Ensure that the WPILibVersioningPlugin is setup by setting the release type, if releaseType wasn't
-// already specified on the command line
-if (!hasProperty('releaseType')) {
-    WPILibVersion {
-        releaseType = 'official'
-    }
-}
-
 def versionClass = """
 package org.usfirst.frc330.util;
 /*
@@ -401,6 +393,14 @@ def wpilibVersionFile = file('java/src/org/usfirst/frc330/util/BeachbotLibVersio
 def willPublish = false
 gradle.taskGraph.addTaskExecutionGraphListener { graph ->
     willPublish = graph.hasTask(build)
+}
+
+task copyJava(type: Copy) {
+    def proj = project(":arm:cpp")
+    dependsOn proj.jar
+    def userDir = System.getProperty("user.home")
+    destinationDir = file("${userDir}/wpilib/user/java/lib")
+    from (file(proj.jar.archivePath)) {} 
 }
 
 task generateJavaVersion() {

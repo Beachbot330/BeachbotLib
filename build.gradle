@@ -11,6 +11,14 @@ allprojects {
     }
 }
 
+// Ensure that the WPILibVersioningPlugin is setup by setting the release type, if releaseType wasn't
+// already specified on the command line
+if (!hasProperty('releaseType')) {
+    WPILibVersion {
+        releaseType = 'dev'
+    }
+}
+
 ext.useDriver = false
 
 ext.compilerPrefixToUse = project.hasProperty('compilerPrefix') ? project.compilerPrefix : 'arm-frc-linux-gnueabi-'
