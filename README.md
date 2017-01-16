@@ -6,4 +6,4 @@ Reusable library for team 330
 * create release in github using release/BeachbotLib-usershared.zip
 
 #Installing
-Unzip to unzip to C:\Users\\<user>\wpilib\user (so that files go in unzip to C:\Users\\<user>\wpilib\user\java\lib
+Unzip to unzip to C:\Users\\\<user>\wpilib\user (so that files go in unzip to C:\Users\\\<user>\wpilib\user\java\lib
