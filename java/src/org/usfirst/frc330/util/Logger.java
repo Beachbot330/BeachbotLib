@@ -31,6 +31,11 @@ public class Logger {
 	private java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 	private Date date;
 	boolean usbWorking = true;
+	private long startTime;
+	private double startFPGATime;
+	private File summaryRoboRIO = null;
+	private File summaryUSB = null;
+	private BufferedWriter summaryUSBWriter = null, summaryroboRIOWriter = null;
 	
 	public enum Severity{
 		INFO,ERROR,WARNING,COMMAND,DEBUG
@@ -50,12 +55,17 @@ public class Logger {
 		m_usbPath = usbPath;
 		m_filePrefix = filePrefix;
 		
-		
-		calendar.setTimeInMillis(System.currentTimeMillis());
+		startTime = System.currentTimeMillis();
+		startFPGATime = (long)(Timer.getFPGATimestamp()*1000);
+		calendar.setTimeInMillis(startTime);
 		date = calendar.getTime();
+		
+		String filename = m_filePrefix + "_" + sdf.format(date) + ".txt";
 
-		roboRIOFile = new File(m_roboRIOPath + "/" + m_filePrefix + "_" + sdf.format(date) + ".txt");
-		usbFile = new File(m_usbPath + "/" + m_filePrefix + "_" + sdf.format(date) + ".txt");
+		roboRIOFile = new File(m_roboRIOPath + "/" + filename);
+		usbFile = new File(m_usbPath + "/" + filename);
+		summaryRoboRIO = new File(m_roboRIOPath + "/" + "LogDirectory.txt");
+		summaryUSB = new File(m_usbPath + "/" + "LogDirectory.txt");
 	
 		try {
 			usbWriter = new BufferedWriter(new FileWriter(usbFile));
@@ -77,6 +87,42 @@ public class Logger {
 			e.printStackTrace();
 		}
 		
+		if (usbWorking) {
+			try {
+				summaryUSBWriter = new BufferedWriter(new FileWriter(summaryUSB,true));
+				summaryUSBWriter.newLine();
+				summaryUSBWriter.write(filename);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				if (summaryUSBWriter != null)
+					try {
+						summaryUSBWriter.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		}
+		try {
+			summaryroboRIOWriter = new BufferedWriter(new FileWriter(summaryRoboRIO,true));
+			summaryroboRIOWriter.newLine();
+			summaryroboRIOWriter.write(filename);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (summaryroboRIOWriter != null) {
+				try {
+					summaryroboRIOWriter.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		File programFile = new File("/home/lvuser/FRCUserProgram.jar");
 		
 		println("Logger filename: " + m_filePrefix + "_" + sdf.format(date),true);
@@ -85,10 +131,11 @@ public class Logger {
 	}
 	
 	/**
-	 * Default constructor using /home/lvuser for roboRIOPath, /media/sda1 for usbPath, and BB2016_Log for file prefix.
+	 * Default constructor using /home/lvuser for roboRIOPath, /media/sda1 for usbPath, 
+	 * and BB(Year)_Log for file prefix.
 	 */
 	private Logger() {
-		this("/home/lvuser", "/media/sda1", "BB2017_Log");
+		this("/home/lvuser", "/media/sda1", "BB" + BeachbotLibVersion.Version.substring(0, 3) + "_Log");
 	}
 	
 	public static Logger getInstance() {
@@ -106,11 +153,15 @@ public class Logger {
 	 */
 	public void updateDate() {
 		boolean success;
-		if (calendar.get(GregorianCalendar.YEAR) < 2015) {
-			calendar.setTimeInMillis(System.currentTimeMillis() - (long)(Timer.getFPGATimestamp()*1000));
+		long currentSystemTime = System.currentTimeMillis();
+		double currentFPGATime = Timer.getFPGATimestamp();
+		if (Math.abs(currentSystemTime - startTime - (long)((currentFPGATime)*1000) -startFPGATime) > 60*1000 )
+		{
+			startTime = currentSystemTime - (long)(currentFPGATime*1000);
+			calendar.setTimeInMillis(startTime);
 			date = calendar.getTime();
 			
-			if (calendar.get(GregorianCalendar.YEAR) >= 2015) {
+			if (calendar.get(GregorianCalendar.YEAR) >= 2017) {
 				File tempFile = new File(m_roboRIOPath + "/" + m_filePrefix + "_" + sdf.format(date) + ".txt");
 				success = roboRIOFile.renameTo(tempFile);
 				println("RoboRIO File Renamed: " + success + " " + m_filePrefix + "_" + sdf.format(date) + ".txt",true);
@@ -118,6 +169,40 @@ public class Logger {
 				success = usbFile.renameTo(tempFile);
 				usbWorking &= success;
 				println("USB File Renamed: " + success + " " + m_filePrefix + "_" + sdf.format(date) + ".txt",true);
+				File summaryRoboRIO = new File(m_roboRIOPath + "/" + "LogDirectory.txt");
+				File summaryUSB = new File(m_usbPath + "/" + "LogDirectory.txt");
+				if (usbWorking) {
+					try {
+						summaryUSBWriter = new BufferedWriter(new FileWriter(summaryUSB, true));
+						summaryUSBWriter.write(" renamed to: " + m_filePrefix + "_" + sdf.format(date) + ".txt");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						if (summaryUSBWriter != null)
+							try {
+								summaryUSBWriter.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					}
+				}
+				try {
+					summaryroboRIOWriter = new BufferedWriter(new FileWriter(summaryRoboRIO, true));
+					summaryroboRIOWriter.write(" renamed to: " + m_filePrefix + "_" + sdf.format(date) + ".txt");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					if (summaryroboRIOWriter != null)
+						try {
+							summaryroboRIOWriter.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
 			}
 		}
 	}
