@@ -14,6 +14,22 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public abstract class BBCommand extends Command {
 	
+	public BBCommand() {
+		super();
+	}
+
+	public BBCommand(double timeout) {
+		super(timeout);
+	}
+
+	public BBCommand(String name, double timeout) {
+		super(name, timeout);
+	}
+
+	public BBCommand(String name) {
+		super(name);
+	}
+
 	boolean m_initialized = false;
 	boolean m_completed = false;
 	
