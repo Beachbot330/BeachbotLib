@@ -145,7 +145,7 @@ task userSharedZip(type: Zip) {
     if (includeJavaSources) {
       dependsOn javaSourceJar
         from (file(javaSourceJar.archivePath)) {
-            into '/java/src'
+            into '/java/lib'
         }
     }
     
@@ -153,7 +153,7 @@ task userSharedZip(type: Zip) {
     if (includeJavaJavadoc) {
         dependsOn javaJavadocJar
         from (file(javaJavadocJar.archivePath)) {
-            into '/java/src'
+            into '/java/lib'
         }
     }
     
