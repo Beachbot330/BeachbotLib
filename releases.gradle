@@ -380,9 +380,13 @@ if (useDriver) {
 task copyJava(type: Copy) {
     def proj = project(":arm:cpp")
     dependsOn proj.jar
+    dependsOn javaSourceJar
+    dependsOn javaJavadocJar
     def userDir = System.getProperty("user.home")
     destinationDir = file("${userDir}/wpilib/user/java/lib")
     from (file(proj.jar.archivePath)) {} 
+    from (file(javaSourceJar.archivePath)) {} 
+    from (file(javaJavadocJar.archivePath)) {} 
 }
 
 build.dependsOn javaSourceJar
