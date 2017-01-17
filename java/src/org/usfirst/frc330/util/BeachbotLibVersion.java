@@ -4,5 +4,5 @@ package org.usfirst.frc330.util;
  * any time the publish task is run, or when this file is deleted.
  */
 public final class BeachbotLibVersion {
-  public static final String Version = "2017.0.3";
+  public static final String Version = "2017.0.5";
 }
