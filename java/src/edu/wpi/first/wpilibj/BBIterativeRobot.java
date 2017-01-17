@@ -26,19 +26,19 @@ public class BBIterativeRobot extends IterativeRobot {
 
 	@Override
 	public void startCompetition() {
-        HAL.report(tResourceType.kResourceType_Framework,
-                                   tInstances.kFramework_Iterative);
+		HAL.report(tResourceType.kResourceType_Framework,
+				tInstances.kFramework_Iterative);
 
 		robotInit();
 
 		// Tell the DS that the robot is ready to be enabled
-        HAL.observeUserProgramStarting();
+		HAL.observeUserProgramStarting();
 
 		// loop forever, calling the appropriate mode-dependent function
 		LiveWindow.setEnabled(false);
 		while (true) {
 			// Call the appropriate function depending upon the current robot mode
-			m_ds.waitForData(50);
+			m_ds.waitForData(0.05);
 			if (isDisabled()) {
 				// call DisabledInit() if we are now just entering disabled mode from
 				// either a different mode or from power-on
@@ -69,7 +69,7 @@ public class BBIterativeRobot extends IterativeRobot {
 				}
 				HAL.observeUserProgramTest();
 				testPeriodic();
-				
+
 			} else if (isAutonomous()) {
 				// call Autonomous_Init() if this is the first time
 				// we've entered autonomous_mode
@@ -102,20 +102,20 @@ public class BBIterativeRobot extends IterativeRobot {
 				HAL.observeUserProgramTeleop();
 				teleopPeriodic();
 			}
-				else {
-					// call Disconnected_Init() if this is the first time
-					// we've entered disconnected_mode
-					if (!m_disconnectedInitialized) {
-						LiveWindow.setEnabled(false);
-						disconnectedInit();
-						m_teleopInitialized = false;
-						m_testInitialized = false;
-						m_autonomousInitialized = false;
-						m_disabledInitialized = false;
-						m_disconnectedInitialized = true;
-					}
-					disconnectedPeriodic();
-				}			
+			else {
+				// call Disconnected_Init() if this is the first time
+				// we've entered disconnected_mode
+				if (!m_disconnectedInitialized) {
+					LiveWindow.setEnabled(false);
+					disconnectedInit();
+					m_teleopInitialized = false;
+					m_testInitialized = false;
+					m_autonomousInitialized = false;
+					m_disabledInitialized = false;
+					m_disconnectedInitialized = true;
+				}
+				disconnectedPeriodic();
+			}			
 		}
 	}
 
