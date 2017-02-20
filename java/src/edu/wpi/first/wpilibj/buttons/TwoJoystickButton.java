@@ -2,6 +2,7 @@ package edu.wpi.first.wpilibj.buttons;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.buttons.Trigger.ButtonScheduler;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -51,6 +52,50 @@ public class TwoJoystickButton extends Trigger {
                 }
             }
         } .start();
+	}
+	
+	/**
+	 * Constantly starts the given command while the button is held.
+	 *
+	 * {@link Command#start()} will be called repeatedly while the trigger is active, and will be
+	 * canceled when the trigger becomes inactive.
+	 *
+	 * @param command the command to start
+	 */
+	public void whileActive(final Command falseCommand, final Command trueCommand) {
+		new ButtonScheduler() {
+
+			private boolean m_pressedLast = get();
+			private Command m_selectedCommand = falseCommand;
+			private boolean m_selectedCommandState = false;
+
+			@Override
+			public void execute() {
+				if (get()) {				
+					if (m_pressedLast == false) {
+						if (joy.getRawButton(commandSelectButton)) {
+							m_selectedCommand = trueCommand;
+	                    }
+	                    else {
+	                    	m_selectedCommand = falseCommand;
+	                    }
+						m_selectedCommand.start();
+						m_pressedLast = true;
+						m_selectedCommandState = joy.getRawButton(commandSelectButton);
+					}
+					else {
+						if (joy.getRawButton(commandSelectButton) != m_selectedCommandState) {
+							m_selectedCommand.cancel();
+						}
+					}
+				} else {
+					if (m_pressedLast) {
+						m_pressedLast = false;
+						m_selectedCommand.cancel();
+					}
+				}
+			}
+		}.start();
 	}
     
     public boolean get() {
