@@ -3,7 +3,7 @@ package org.usfirst.frc330.wpilibj;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class BBDoubleSolenoid extends DoubleSolenoid {
-	DoubleSolenoid.Value value;
+	DoubleSolenoid.Value value = Value.kOff;
 	public BBDoubleSolenoid(int moduleNumber, int forwardChannel,
 			int reverseChannel) {
 		super(moduleNumber, forwardChannel, reverseChannel);
