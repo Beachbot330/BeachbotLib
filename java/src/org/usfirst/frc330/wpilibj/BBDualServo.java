@@ -17,6 +17,7 @@ public class BBDualServo implements LiveWindowSendable {
 
 	public void set(double value) {
 		servo1.set(value);
+		servo2.set(value);
 	}
 
 	public double get() {
@@ -36,11 +37,6 @@ public class BBDualServo implements LiveWindowSendable {
 
 	public double getAngle() {
 		return servo1.getAngle();
-	}
-
-	public void setRawBounds(int max, int deadbandMax, int center, int deadbandMin, int min) {
-		servo1.setRawBounds(max, deadbandMax, center, deadbandMin, min);
-		servo2.setRawBounds(max, deadbandMax, center, deadbandMin, min);
 	}
 
 	public void setBounds(double max, double deadbandMax, double center, double deadbandMin, double min) {
@@ -120,6 +116,7 @@ public class BBDualServo implements LiveWindowSendable {
 					set(tmpValue);
 			}
 		};
+		m_table.addTableListener("Value", m_tableListener, true);
 	}
 
 	public void stopLiveWindowMode() {

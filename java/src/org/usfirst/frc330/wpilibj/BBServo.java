@@ -23,7 +23,7 @@ public class BBServo extends Servo {
 			pos = 1 - pos;
 		super.setPosition(pos);
 	}
-	
+/*	
 	private ITableListener m_tableListener;
 	
 	@Override
@@ -37,6 +37,6 @@ public class BBServo extends Servo {
 			}
 		};
 		getTable().addTableListener("Value", m_tableListener, true);
-	}
+	}*/
 
 }
