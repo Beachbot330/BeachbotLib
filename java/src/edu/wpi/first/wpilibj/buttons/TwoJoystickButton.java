@@ -55,12 +55,10 @@ public class TwoJoystickButton extends Trigger {
 	}
 	
 	/**
-	 * Constantly starts the given command while the button is held.
-	 *
-	 * {@link Command#start()} will be called repeatedly while the trigger is active, and will be
-	 * canceled when the trigger becomes inactive.
-	 *
-	 * @param command the command to start
+	 * Runs one of the given commands when triggerButton is held.
+	 * Determines which command to run based on commandSelectButton.
+	 * @param falseCommand command to run when commandSelectButton is false
+	 * @param trueCommand command to run when commandSelectButton is true
 	 */
 	public void whileActive(final Command falseCommand, final Command trueCommand) {
 		new ButtonScheduler() {
