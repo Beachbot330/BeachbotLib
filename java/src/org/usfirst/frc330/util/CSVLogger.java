@@ -1,62 +1,31 @@
 package org.usfirst.frc330.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc330.util.LoggerData;
 
 public class CSVLogger {
 	private static CSVLogger instance = null;
+	private LoggerData loggerData;
 	
 	private LinkedHashMap<String,CSVLoggable> table;
 	
 	public static final int SDUpdateRate = 10; //send data every SDUpdateRate call (10 = 5hz).
 	
-	private File roboRIOFile, usbFile;
-	private BufferedWriter roboRIOWriter, usbWriter;
-	private String m_roboRIOPath, m_usbPath, m_filePrefix;
-	private GregorianCalendar calendar = new java.util.GregorianCalendar();
-	private java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 	private java.text.SimpleDateFormat sdf_comma = new java.text.SimpleDateFormat("yyyy,MM,dd,HH,mm,ss,SSS");
-	private Date date;
+
 	boolean usbWorking = true;
+	
 	
 	private CSVLogger(String roboRIOPath, String usbPath, String filePrefix) {
 		table = new LinkedHashMap<String,CSVLoggable>();
-		m_roboRIOPath = roboRIOPath;
-		m_usbPath = usbPath;
-		m_filePrefix = filePrefix;
-		
-		
-    	calendar.setTimeInMillis(System.currentTimeMillis());
-    	date = calendar.getTime();
-
-		roboRIOFile = new File(m_roboRIOPath + "/" + m_filePrefix + "_" + sdf.format(date) + ".csv");
-		usbFile = new File(m_usbPath + "/" + m_filePrefix + "_" + sdf.format(date) + ".csv");
-		System.out.println("CSV Date: " + sdf.format(date));
-		
-		try {
-			usbWriter = new BufferedWriter(new FileWriter(usbFile));
-		} catch (IOException e) {
-			usbWorking = false;
-			e.printStackTrace();
-		}
-		try {
-			roboRIOWriter = new BufferedWriter(new FileWriter(roboRIOFile));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		loggerData = new LoggerData(roboRIOPath, usbPath, filePrefix, ".csv");	
 	}
 	
 	private CSVLogger() {
-		this("/home/lvuser", "/media/sda1", "BB2017_CSV");
+		this("/home/lvuser", "/media/sda1", "BB" + BeachbotLibVersion.Version.substring(0, 4) + "_CSV");
 	}
 	
 	public static CSVLogger getInstance() {
@@ -64,6 +33,10 @@ public class CSVLogger {
 		 instance = new CSVLogger();
 	  }
 	  return instance;
+	}
+	
+	public void updateDate() {
+		loggerData.updateDate(false);
 	}
 	
 	public void add(String name, CSVLoggable data) {
@@ -79,22 +52,8 @@ public class CSVLogger {
 			header = header + key + ", ";
 		}
 		header = header + "\r\n";
+		loggerData.write(header);
 		
-		if (usbWorking) {
-	    	try {
-				usbWriter.write(header);
-			} catch (IOException e) {
-				usbWorking = false;
-				e.printStackTrace();
-			}
-		}
-		else {
-			try {
-				roboRIOWriter.write(header);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
 	}
 	
 //	String data;
@@ -129,23 +88,7 @@ public class CSVLogger {
 		
 		b.append("\r\n");
 		
-		if (usbWorking) {
-	    	try {
-				usbWriter.write(b.toString());
-
-			} catch (IOException e) {
-				usbWorking = false;
-				e.printStackTrace();
-			}
-		}
-		else {
-			try {
-				roboRIOWriter.write(b.toString());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
-
+		loggerData.write(b.toString());
 	}
 	
 }
