@@ -12,7 +12,7 @@ public class POVButton extends Button {
 	private int dir, alt1, alt2;
 	private int current;
 	/**
-	 * Create a trigger for choosing one of two commands based on joystick buttons
+	 * Create a trigger for running a command from a POV direction and up to two alternates
 	 * @param joy Joystick to use
 	 * @param pov POV to use
 	 */

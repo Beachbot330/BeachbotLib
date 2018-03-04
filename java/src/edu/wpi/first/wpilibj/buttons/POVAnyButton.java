@@ -11,7 +11,7 @@ public class POVAnyButton extends Button {
 	private int pov;
 	
 	/**
-	 * Create a trigger for choosing one of two commands based on joystick buttons
+	 * Create a trigger for running a command when any direction on a POV is pressed.
 	 * @param joy Joystick to use
 	 * @param pov POV to use
 	 */
