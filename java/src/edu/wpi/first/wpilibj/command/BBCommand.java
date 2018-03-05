@@ -31,11 +31,9 @@ public abstract class BBCommand extends Command {
 	}
 
 	boolean m_initialized = false;
-	boolean m_completed = false;
 	
 	@Override
 	public void start(){
-		m_completed = false;
 		super.start();
 	}
 	
@@ -44,7 +42,6 @@ public abstract class BBCommand extends Command {
 		super._initialize();
 		Logger.getInstance().println(this.getClass().getName() + " initialized", false, Severity.COMMAND);
 		m_initialized = true;
-		m_completed = false;
 	}
 
 	@Override
@@ -55,7 +52,6 @@ public abstract class BBCommand extends Command {
 		else
 			Logger.getInstance().println(this.getClass().getName() + " ended", false, Severity.COMMAND);
 		m_initialized = false;
-		m_completed = true;
 	}
 	
 	@Override
@@ -63,7 +59,6 @@ public abstract class BBCommand extends Command {
 		super._interrupted();
 		Logger.getInstance().println(this.getClass().getName() + " interrupted", false, Severity.COMMAND);
 		m_initialized = false;
-		m_completed = true;
 	}
 	
 	public boolean isInitialized() {
