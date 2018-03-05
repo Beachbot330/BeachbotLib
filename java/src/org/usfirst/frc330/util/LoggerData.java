@@ -44,7 +44,8 @@ public class LoggerData {
 			date = calendar.getTime();
 		}
 		
-		filename = m_filePrefix + "_" + sdf.format(date) + m_fileExt;
+		filename = m_filePrefix + "_"+ getMatchPrefix() + 
+				"_" + sdf.format(date) + m_fileExt;
 
 		roboRIOFile = new File(m_roboRIOPath + "/" + filename);
 		usbFile = new File(m_usbPath + "/" + filename);
@@ -128,23 +129,23 @@ public class LoggerData {
 			calendar.setTimeInMillis(startTime);
 			date = calendar.getTime();
 			
-			if (calendar.get(GregorianCalendar.YEAR) >= 2017) {
-				File tempFile = new File(m_roboRIOPath + "/" + m_filePrefix + "_" + sdf.format(date) + m_fileExt);
+			if (calendar.get(GregorianCalendar.YEAR) >= 2018) {
+				File tempFile = new File(m_roboRIOPath + "/" + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt);
 				success = roboRIOFile.renameTo(tempFile);
 				if (writeToLog) 
-					write("RoboRIO File Renamed: " + success + " " + m_filePrefix + "_" + sdf.format(date) + m_fileExt + "\r\n");
-				tempFile = new File(m_usbPath + "/" + m_filePrefix + "_" + sdf.format(date) + m_fileExt);
+					write("RoboRIO File Renamed: " + success + " " + m_filePrefix + getMatchPrefix() + "_" + "_" + sdf.format(date) + m_fileExt + "\r\n");
+				tempFile = new File(m_usbPath + "/" + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt);
 				success = usbFile.renameTo(tempFile);
 				usbWorking &= success;
 				if (writeToLog) {
-					write("USB File Renamed: " + success + " " + m_filePrefix + "_" + sdf.format(date) + m_fileExt + "\r\n");
+					write("USB File Renamed: " + success + " " + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt + "\r\n");
 				}
 				File summaryRoboRIO = new File(m_roboRIOPath + "/" + "LogDirectory.txt");
 				File summaryUSB = new File(m_usbPath + "/" + "LogDirectory.txt");
 				if (usbWorking) {
 					try {
 						summaryUSBWriter = new BufferedWriter(new FileWriter(summaryUSB, true));
-						summaryUSBWriter.write(m_filePrefix + "_" + sdf.format(oldDate) + m_fileExt + " renamed to: " + m_filePrefix + "_" + sdf.format(date) + m_fileExt + "\r\n");
+						summaryUSBWriter.write(m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(oldDate) + m_fileExt + " renamed to: " + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt + "\r\n");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -160,7 +161,7 @@ public class LoggerData {
 				}
 				try {
 					summaryroboRIOWriter = new BufferedWriter(new FileWriter(summaryRoboRIO, true));
-					summaryroboRIOWriter.write(m_filePrefix + "_" + sdf.format(oldDate) + m_fileExt + " renamed to: " + m_filePrefix + "_" + sdf.format(date) + m_fileExt + "\r\n");
+					summaryroboRIOWriter.write(m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(oldDate) + m_fileExt + " renamed to: " + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt + "\r\n");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -204,6 +205,12 @@ public class LoggerData {
 	
 	public SimpleDateFormat getSDF() {
 		return sdf;
+	}
+	
+	public String getMatchPrefix() {
+		return DriverStation.getInstance().getEventName() + "_" + 
+				DriverStation.getInstance().getMatchType() + 
+				DriverStation.getInstance().getMatchNumber();
 	}
 
 }
