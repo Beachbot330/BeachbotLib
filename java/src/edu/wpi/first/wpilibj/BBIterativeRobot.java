@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+/**
+ * @deprecated use TimedRobot instead
+ *
+ */
 public class BBIterativeRobot extends IterativeRobot {
 	
 	protected boolean m_disconnectedInitialized;
