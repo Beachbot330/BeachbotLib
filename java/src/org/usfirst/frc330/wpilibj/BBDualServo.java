@@ -3,11 +3,9 @@ package org.usfirst.frc330.wpilibj;
 import edu.wpi.first.wpilibj.PWM.PeriodMultiplier;
 import edu.wpi.first.wpilibj.PWMConfigDataResult;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
-public class BBDualServo implements LiveWindowSendable {
+
+public class BBDualServo {
 	Servo servo1, servo2;
 
 	public void setPosition(double pos) {
@@ -85,50 +83,5 @@ public class BBDualServo implements LiveWindowSendable {
 		this.servo1 = servo1;
 		this.servo2 = servo2;
 	}
-
-	/*
-	 * Live Window code, only does anything if live window is activated.
-	 */
-	public String getSmartDashboardType() {
-		return "Servo";
-	}
-
-	private ITable m_table;
-	private ITableListener m_tableListener;
-
-	public void initTable(ITable subtable) {
-		m_table = subtable;
-		updateTable();
-	}
-
-	public void updateTable() {
-		if (m_table != null) {
-			m_table.putNumber("Value", get());
-		}
-	}
-
-	public void startLiveWindowMode() {
-		m_tableListener = new ITableListener() {
-			Double tmpValue;
-			public void valueChanged(ITable itable, String key, Object value, boolean bln) {
-				tmpValue = (Double)value;
-				if (tmpValue != 0)
-					set(tmpValue);
-			}
-		};
-		m_table.addTableListener("Value", m_tableListener, true);
-	}
-
-	public void stopLiveWindowMode() {
-		// TODO: Broken, should only remove the listener from "Value" only.
-		m_table.removeTableListener(m_tableListener);
-	}
-
-	@Override
-	public ITable getTable() {
-		return m_table;
-	}
-
-
-
+	
 }

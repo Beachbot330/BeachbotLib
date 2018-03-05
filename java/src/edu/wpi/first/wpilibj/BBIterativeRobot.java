@@ -1,7 +1,5 @@
 package edu.wpi.first.wpilibj;
 
-import org.usfirst.frc330.util.Logger;
-
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
@@ -11,6 +9,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * @deprecated use TimedRobot instead
  *
  */
+@Deprecated
 public class BBIterativeRobot extends IterativeRobot {
 	
 	protected boolean m_disconnectedInitialized;
