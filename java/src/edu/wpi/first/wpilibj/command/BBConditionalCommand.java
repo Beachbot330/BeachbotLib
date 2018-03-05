@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.command;
 
 import java.util.Enumeration;
@@ -25,134 +32,144 @@ import java.util.Enumeration;
  * @see Scheduler
  */
 public abstract class BBConditionalCommand extends BBCommand {
+  /**
+   * The Command to execute if {@link ConditionalCommand#condition()} returns true.
+   */
+  private Command m_onTrue;
 
-	  /**
-	   * The Command to execute if {@link ConditionalCommand#condition()} returns true.
-	   */
-	  private Command m_onTrue;
+  /**
+   * The Command to execute if {@link ConditionalCommand#condition()} returns false.
+   */
+  private Command m_onFalse;
 
-	  /**
-	   * The Command to execute if {@link ConditionalCommand#condition()} returns false.
-	   */
-	  private Command m_onFalse;
+  /**
+   * Stores command chosen by condition.
+   */
+  private Command m_chosenCommand = null;
 
-	  /**
-	   * Stores command chosen by condition.
-	   */
-	  private Command m_chosenCommand = null;
+  private void requireAll() {
+    if (m_onTrue != null) {
+      for (Enumeration e = m_onTrue.getRequirements(); e.hasMoreElements(); ) {
+        requires((Subsystem) e.nextElement());
+      }
+    }
 
-	  /**
-	   * Creates a new ConditionalCommand with given onTrue and onFalse Commands.
-	   *
-	   * <p>Users of this constructor should also override condition().
-	   *
-	   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
-	   */
-	  public BBConditionalCommand(Command onTrue) {
-	    this(onTrue, new InstantCommand());
-	  }
+    if (m_onFalse != null) {
+      for (Enumeration e = m_onFalse.getRequirements(); e.hasMoreElements(); ) {
+        requires((Subsystem) e.nextElement());
+      }
+    }
+  }
 
-	  /**
-	   * Creates a new ConditionalCommand with given onTrue and onFalse Commands.
-	   *
-	   * <p>Users of this constructor should also override condition().
-	   *
-	   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
-	   * @param onFalse The Command to execute if {@link ConditionalCommand#condition()} returns false
-	   */
-	  public BBConditionalCommand(Command onTrue, Command onFalse) {
-	    m_onTrue = onTrue;
-	    m_onFalse = onFalse;
+  /**
+   * Creates a new ConditionalCommand with given onTrue and onFalse Commands.
+   *
+   * <p>Users of this constructor should also override condition().
+   *
+   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
+   */
+  public BBConditionalCommand(Command onTrue) {
+    this(onTrue, null);
+  }
 
-	    for (Enumeration e = m_onTrue.getRequirements(); e.hasMoreElements(); ) {
-	      requires((Subsystem) e.nextElement());
-	    }
+  /**
+   * Creates a new ConditionalCommand with given onTrue and onFalse Commands.
+   *
+   * <p>Users of this constructor should also override condition().
+   *
+   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
+   * @param onFalse The Command to execute if {@link ConditionalCommand#condition()} returns false
+   */
+  public BBConditionalCommand(Command onTrue, Command onFalse) {
+    m_onTrue = onTrue;
+    m_onFalse = onFalse;
 
-	    for (Enumeration e = m_onFalse.getRequirements(); e.hasMoreElements(); ) {
-	      requires((Subsystem) e.nextElement());
-	    }
-	  }
+    requireAll();
+  }
 
-	  /**
-	   * Creates a new ConditionalCommand with given name and onTrue and onFalse Commands.
-	   *
-	   * <p>Users of this constructor should also override condition().
-	   *
-	   * @param name the name for this command group
-	   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
-	   */
-	  public BBConditionalCommand(String name, Command onTrue) {
-	    this(name, onTrue, new InstantCommand());
-	  }
+  /**
+   * Creates a new ConditionalCommand with given name and onTrue and onFalse Commands.
+   *
+   * <p>Users of this constructor should also override condition().
+   *
+   * @param name the name for this command group
+   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
+   */
+  public BBConditionalCommand(String name, Command onTrue) {
+    this(name, onTrue, null);
+  }
 
-	  /**
-	   * Creates a new ConditionalCommand with given name and onTrue and onFalse Commands.
-	   *
-	   * <p>Users of this constructor should also override condition().
-	   *
-	   * @param name the name for this command group
-	   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
-	   * @param onFalse The Command to execute if {@link ConditionalCommand#condition()} returns false
-	   */
-	  public BBConditionalCommand(String name, Command onTrue, Command onFalse) {
-	    super(name);
-	    m_onTrue = onTrue;
-	    m_onFalse = onFalse;
+  /**
+   * Creates a new ConditionalCommand with given name and onTrue and onFalse Commands.
+   *
+   * <p>Users of this constructor should also override condition().
+   *
+   * @param name the name for this command group
+   * @param onTrue The Command to execute if {@link ConditionalCommand#condition()} returns true
+   * @param onFalse The Command to execute if {@link ConditionalCommand#condition()} returns false
+   */
+  public BBConditionalCommand(String name, Command onTrue, Command onFalse) {
+    super(name);
+    m_onTrue = onTrue;
+    m_onFalse = onFalse;
 
-	    for (Enumeration e = m_onTrue.getRequirements(); e.hasMoreElements(); ) {
-	      requires((Subsystem) e.nextElement());
-	    }
+    requireAll();
+  }
 
-	    for (Enumeration e = m_onFalse.getRequirements(); e.hasMoreElements(); ) {
-	      requires((Subsystem) e.nextElement());
-	    }
-	  }
+  /**
+   * The Condition to test to determine which Command to run.
+   *
+   * @return true if m_onTrue should be run or false if m_onFalse should be run.
+   */
+  protected abstract boolean condition();
 
-	  /**
-	   * The Condition to test to determine which Command to run.
-	   *
-	   * @return true if m_onTrue should be run or false if m_onFalse should be run.
-	   */
-	  protected abstract boolean condition();
+  /**
+   * Calls {@link ConditionalCommand#condition()} and runs the proper command.
+   */
+  @Override
+  protected void _initialize() {
+    if (condition()) {
+      m_chosenCommand = m_onTrue;
+    } else {
+      m_chosenCommand = m_onFalse;
+    }
 
-	  /**
-	   * Calls {@link ConditionalCommand#condition()} and runs the proper command.
-	   */
-	  @Override
-	  protected void _initialize() {
-	    if (condition()) {
-	      m_chosenCommand = m_onTrue;
-	    } else {
-	      m_chosenCommand = m_onFalse;
-	    }
+    if (m_chosenCommand != null) {
+      /*
+       * This is a hack to make cancelling the chosen command inside a
+       * CommandGroup work properly
+       */
+      m_chosenCommand.clearRequirements();
 
-	    // This is a hack to make cancelling the chosen command inside a CommandGroup work properly
-	    m_chosenCommand.clearRequirements();
+      m_chosenCommand.start();
+    }
+    super._initialize();
+  }
 
-	    m_chosenCommand.start();
-	  }
+  @Override
+  protected void _cancel() {
+    if (m_chosenCommand != null && m_chosenCommand.isRunning()) {
+      m_chosenCommand.cancel();
+    }
 
-	  @Override
-	  protected void _cancel() {
-	    if (m_chosenCommand != null && m_chosenCommand.isRunning()) {
-	      m_chosenCommand.cancel();
-	    }
+    super._cancel();
+  }
 
-	    super._cancel();
-	  }
+  @Override
+  protected boolean isFinished() {
+    if (m_chosenCommand != null) {
+      return m_chosenCommand.isCompleted();
+    } else {
+      return true;
+    }
+  }
 
-	  @Override
-	  protected boolean isFinished() {
-	    return m_chosenCommand != null && m_chosenCommand.isRunning()
-	        && m_chosenCommand.isFinished();
-	  }
+  @Override
+  protected void _interrupted() {
+    if (m_chosenCommand != null && m_chosenCommand.isRunning()) {
+      m_chosenCommand.cancel();
+    }
 
-	  @Override
-	  protected void interrupted() {
-	    if (m_chosenCommand != null && m_chosenCommand.isRunning()) {
-	      m_chosenCommand.cancel();
-	    }
-
-	    super.interrupted();
-	  }
+    super._interrupted();
+  }
 }

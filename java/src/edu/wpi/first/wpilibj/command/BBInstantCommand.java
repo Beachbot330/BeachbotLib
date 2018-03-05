@@ -21,7 +21,6 @@ public class BBInstantCommand extends BBCommand {
 	  super();
   }
 
-
   protected boolean isFinished() {
     return true;
   }

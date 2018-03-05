@@ -69,10 +69,5 @@ public abstract class BBCommand extends Command {
 	public boolean isInitialized() {
 		return m_initialized;
 	}
-	
-	public boolean isCompleted(){
-		boolean complete = m_completed;
-		m_completed = false;
-		return complete;
-	}
+
 }

@@ -32,11 +32,5 @@ public class BBCommandGroup extends CommandGroup {
 		super._interrupted();
 		Logger.getInstance().println(this.getClass().getName() + " interrupted", false, Severity.COMMAND);
 	}
-	
-	public boolean isCompleted(){
-		boolean complete = m_completed;
-		m_completed = false;
-		return complete;
-	}
     
 }
