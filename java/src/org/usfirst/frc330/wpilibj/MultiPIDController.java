@@ -32,6 +32,7 @@ public class MultiPIDController extends PIDController{
 
     public void setPID(PIDGains gains) {
         setPID(gains.getP(), gains.getI(), gains.getD(), gains.getF());
+        setMaxOutput(gains.getMaxOutput());
         Logger.getInstance().println("Changing " + name + " Gains to " + gains.getName() + ". P=" + gains.getP() + " MaxOutput=" + gains.getMaxOutput() + " MaxOutputStep=" + gains.getMaxOutputStep(),false);        
     }
     
