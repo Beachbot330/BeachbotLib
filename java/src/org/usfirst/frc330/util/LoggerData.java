@@ -30,6 +30,7 @@ public class LoggerData {
 	private File summaryUSB = null;
 	private BufferedWriter summaryUSBWriter = null, summaryroboRIOWriter = null;
 	private String filename;
+	private String prefix;
 	
 	public LoggerData(String roboRIOPath, String usbPath, String filePrefix, String fileExtension) {
 		m_roboRIOPath = roboRIOPath;
@@ -43,6 +44,8 @@ public class LoggerData {
 			calendar.setTimeInMillis(startTime);
 			date = calendar.getTime();
 		}
+		
+		prefix = getMatchPrefix();
 		
 		filename = m_filePrefix + "_"+ getMatchPrefix() + 
 				"_" + sdf.format(date) + m_fileExt;
@@ -122,7 +125,7 @@ public class LoggerData {
 		boolean success;
 		long currentSystemTime = System.currentTimeMillis();
 		double currentFPGATime = Timer.getFPGATimestamp();
-		if (Math.abs(currentSystemTime - startTime - (long)((currentFPGATime)*1000) -startFPGATime) > 60*1000 )
+		if (Math.abs(currentSystemTime - startTime - (long)((currentFPGATime)*1000) -startFPGATime) > 60*1000 || !prefix.equals(getMatchPrefix()))
 		{
 			Date oldDate = date;
 			startTime = currentSystemTime - (long)(currentFPGATime*1000);
