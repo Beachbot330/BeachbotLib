@@ -125,7 +125,7 @@ public class LoggerData {
 		boolean success;
 		long currentSystemTime = System.currentTimeMillis();
 		double currentFPGATime = Timer.getFPGATimestamp();
-		if (Math.abs(currentSystemTime - startTime - (long)((currentFPGATime)*1000) -startFPGATime) > 60*1000 || !prefix.equals(getMatchPrefix()))
+		if (Math.abs(currentSystemTime - startTime - (long)((currentFPGATime)*1000) -startFPGATime) > 60*1000 || !prefix.matches(getMatchPrefix()) )
 		{
 			Date oldDate = date;
 			startTime = currentSystemTime - (long)(currentFPGATime*1000);
