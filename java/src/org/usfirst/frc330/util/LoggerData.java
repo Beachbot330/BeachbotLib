@@ -131,6 +131,7 @@ public class LoggerData {
 			startTime = currentSystemTime - (long)(currentFPGATime*1000);
 			calendar.setTimeInMillis(startTime);
 			date = calendar.getTime();
+			prefix = getMatchPrefix();
 			
 			if (calendar.get(GregorianCalendar.YEAR) >= 2018) {
 				File tempFile = new File(m_roboRIOPath + "/" + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt);
