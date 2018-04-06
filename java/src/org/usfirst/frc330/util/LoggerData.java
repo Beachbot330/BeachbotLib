@@ -138,12 +138,16 @@ public class LoggerData {
 				success = roboRIOFile.renameTo(tempFile);
 				if (writeToLog) 
 					write("RoboRIO File Renamed: " + success + " " + m_filePrefix + getMatchPrefix() + "_" + "_" + sdf.format(date) + m_fileExt + "\r\n");
+				if (success)
+					roboRIOFile = tempFile;
 				tempFile = new File(m_usbPath + "/" + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt);
 				success = usbFile.renameTo(tempFile);
 				usbWorking &= success;
 				if (writeToLog) {
 					write("USB File Renamed: " + success + " " + m_filePrefix + "_" + getMatchPrefix() + "_" + sdf.format(date) + m_fileExt + "\r\n");
 				}
+				if (success) 
+					usbFile = tempFile;
 				File summaryRoboRIO = new File(m_roboRIOPath + "/" + "LogDirectory.txt");
 				File summaryUSB = new File(m_usbPath + "/" + "LogDirectory.txt");
 				if (usbWorking) {
