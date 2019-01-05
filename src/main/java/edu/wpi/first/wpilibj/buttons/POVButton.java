@@ -12,9 +12,12 @@ public class POVButton extends Button {
 	private int dir, alt1, alt2;
 	private int current;
 	/**
-	 * Create a trigger for running a command from a POV direction and up to two alternates
+	 * Create a trigger for running a command from a POV direction and up to two alternates.
+	 * The POV angles start at 0 in the up direction, and increase clockwise (eg right is 90,
+     * upper-left is 315).
 	 * @param joy Joystick to use
 	 * @param pov POV to use
+	 * @param dir the pov direction to trigger with
 	 */
 	public POVButton(Joystick joy, int pov, int dir) {
 		this.joy = joy;

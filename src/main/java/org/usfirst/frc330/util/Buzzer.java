@@ -13,6 +13,7 @@ public class Buzzer {
 	private DigitalOutput buzzer;
 	/**
 	 * Constructor
+	 * @param buzzerOutput the DigitalOutput the buzzer is connected to.
 	 */
 	public Buzzer(DigitalOutput buzzerOutput) {
 		buzzer = buzzerOutput;

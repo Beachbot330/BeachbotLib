@@ -1,7 +1,7 @@
 package org.usfirst.frc330.wpilibj;
 
 import edu.wpi.first.wpilibj.PWM.PeriodMultiplier;
-import edu.wpi.first.wpilibj.PWMConfigDataResult;
+import edu.wpi.first.hal.PWMConfigDataResult;
 import edu.wpi.first.wpilibj.Servo;
 
 
