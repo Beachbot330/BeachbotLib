@@ -12,14 +12,14 @@ Features:
 
 #Installing
 Add the following to build.gradle where VERSION is the release tag eg 2019.0.1
-`repositories {
+```
+repositories {
     maven { url 'https://jitpack.io' }
 }
 dependencies {
-
     implementation 'com.github.Beachbot330:BeachbotLib:VERSION'
-}`
-
+}
+```
 
 #Releasing
 * create a release in github. Jitpack does the rest
