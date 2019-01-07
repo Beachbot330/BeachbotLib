@@ -10,7 +10,7 @@ Features:
 * PID controllers with changeable gains
 * Multiple Speed Controllers
 
-#Installing
+# Installing
 Add the following to build.gradle where VERSION is the release tag eg 2019.0.1
 ```
 repositories {
@@ -21,5 +21,5 @@ dependencies {
 }
 ```
 
-#Releasing
+# Releasing
 * create a release in github. Jitpack does the rest
