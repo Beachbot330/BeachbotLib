@@ -11,13 +11,15 @@ Features:
 * Multiple Speed Controllers
 
 #Installing
-* Close Eclipse
-* Unzip to C:\Users\\\<user>\wpilib\user (so that files go in unzip to C:\Users\\\<user>\wpilib\user\java\lib
-* Reopen Eclipse
+Add the following to build.gradle where VERSION is the release tag eg 2019.0.1
+`repositories {
+    maven { url 'https://jitpack.io' }
+}
+dependencies {
 
-See http://wpilib.screenstepslive.com/s/4485/m/13503/l/682619-3rd-party-libraries for more information for how libraries are implemented for FRC.
+    implementation 'com.github.Beachbot330:BeachbotLib:VERSION'
+}`
 
 
 #Releasing
-* gradlew build
-* create release in github using release/BeachbotLib-usershared.zip
+* create a release in github. Jitpack does the rest
