@@ -17,7 +17,7 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 dependencies {
-    implementation 'com.github.Beachbot330:BeachbotLib:VERSION'
+    compile 'com.github.Beachbot330:BeachbotLib:VERSION'
 }
 ```
 
