@@ -62,7 +62,7 @@ public class CSVLogger {
 	CSVLoggable value;
 	StringBuilder b = new StringBuilder(1000);
 	double test;
-	Watchdog wd = new Watchdog(0.005, null);
+	Watchdog wd = new Watchdog(0.005, () -> {});
 
 	public void writeData(boolean flush) {
 		wd.reset();
@@ -83,11 +83,7 @@ public class CSVLogger {
 			if (value.isSendToSmartDashboard() && (counter % SDUpdateRate == 0)) {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
 			}
-<<<<<<< HEAD
 			wd.addEpoch("writeData " + me.getKey());
-=======
-			wd.addEpoch("writeData" + me.getKey());
->>>>>>> 246d1d7d1657278e344b863ea11e761313a9538c
 		}
 //		executeTime = Timer.getFPGATimestamp() - executeTime;
 //		System.out.println("Log write time: " + executeTime);		
@@ -98,7 +94,7 @@ public class CSVLogger {
 		loggerData.write(b.toString(), flush);
 		wd.addEpoch("writeData write");
 		wd.disable();
-		if (wd.isExpired())
+		//if (wd.isExpired())
 			wd.printEpochs();
 	}
 
