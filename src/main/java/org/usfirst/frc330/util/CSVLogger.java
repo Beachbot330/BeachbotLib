@@ -61,7 +61,7 @@ public class CSVLogger {
 	CSVLoggable value;
 	StringBuilder b = new StringBuilder(1000);
 	double test;
-	public void writeData() {
+	public void writeData(boolean flush) {
 //		double executeTime=0;
 		b.setLength(0);
 		
@@ -88,7 +88,11 @@ public class CSVLogger {
 		
 		b.append("\r\n");
 		
-		loggerData.write(b.toString());
+		loggerData.write(b.toString(), flush);
+	}
+
+	public void writeData() {
+		writeData(true);
 	}
 	
 }
