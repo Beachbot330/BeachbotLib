@@ -186,12 +186,13 @@ public class LoggerData {
 		}
 	}
 	
-	public void write(String data) {
+	public void write(String data, boolean flush) {
 
 		if (usbWorking) {
 			try {
 				usbWriter.write(data);
-				usbWriter.flush();
+				if (flush)
+					usbWriter.flush();
 			} catch (IOException e) {
 				usbWorking = false;
 				e.printStackTrace();
@@ -200,11 +201,16 @@ public class LoggerData {
 		else {
 			try {
 				roboRIOWriter.write(data);
-				roboRIOWriter.flush();
+				if (flush)
+					roboRIOWriter.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}	
+	}
+
+	public void write(String data) {
+		write(data, true);
 	}
 	
 	public String getFilename() {
