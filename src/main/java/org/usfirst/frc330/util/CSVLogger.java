@@ -83,7 +83,7 @@ public class CSVLogger {
 			if (value.isSendToSmartDashboard() && (counter % SDUpdateRate == 0)) {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
 			}
-			wd.addEpoch("writeData" + me.getKey());
+			wd.addEpoch("writeData " + me.getKey());
 		}
 //		executeTime = Timer.getFPGATimestamp() - executeTime;
 //		System.out.println("Log write time: " + executeTime);		
