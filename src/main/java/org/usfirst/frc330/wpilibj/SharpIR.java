@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
  * Class for interfacing with Sharp IR Analog distance Sensors, GP2Y0A51SK0F
- * (4-30cm range) or GP2Y0A41SK0F (2-15cm range). @link setCustomFactors
+ * (4-30cm range) or GP2Y0A41SK0F (2-15cm range). @link setCustomFactors(double, double)
  * can be used to support other sensors.
  * 
  * @author Joe
@@ -64,7 +64,7 @@ public class SharpIR extends SendableBase {
 	/**
 	 * Construct a Sharp IR sensor with custom scaling factors on the given 
 	 * analog input port number.
-	 * @see setCustomFactor for description of mul and exp
+	 * See SharpIR#setCustomFactor(double, double) for description of mul and exp
 	 * @param mul the multiplier
 	 * @param exp the power portion
 	 * @param analogInputPort The analog input port to use (0-7)
@@ -76,10 +76,10 @@ public class SharpIR extends SendableBase {
 	/**
 	 * Construct a Sharp IR sensor with custom scaling factors on the given 
 	 * AnalogInput object.
-	 * @see setCustomFactor for description of mul and exp
+	 * See SharpIR#setCustomFactor(double, double) for description of mul and exp
 	 * @param mul the multiplier
 	 * @param exp the power portion
-	 * @param analogInputPort The analog input port to use (0-7)
+	 * @param input The analog input port to use (0-7)
 	 */
 	public SharpIR(double mul, double exp, AnalogInput input) {
 		setCustomFactors(mul, exp);
@@ -116,7 +116,6 @@ public class SharpIR extends SendableBase {
 	 * by the sensor to distance. It is in the form of mul * voltage ^ exp.
 	 * This can be calculated using the spreadsheet in the 2018 beachcloud 
 	 * software folder. 
-	 * http://beachcloud.team330.org/index.php/apps/files/ajax/download.php?dir=%2F2018%20Software%20(shared)&files=SharpIRSensors.xlsx
 	 * 
 	 * @param mul the multiplier
 	 * @param exp the power portion
