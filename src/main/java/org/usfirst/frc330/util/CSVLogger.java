@@ -3,6 +3,7 @@ package org.usfirst.frc330.util;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc330.util.LoggerData;
 
@@ -61,8 +62,10 @@ public class CSVLogger {
 	CSVLoggable value;
 	StringBuilder b = new StringBuilder(1000);
 	double test;
+	Watchdog wd = new Watchdog(0.005, null);
+
 	public void writeData(boolean flush) {
-//		double executeTime=0;
+		wd.reset();
 		b.setLength(0);
 		
 		counter++;
@@ -71,9 +74,8 @@ public class CSVLogger {
 		b.append(sdf_comma.format(System.currentTimeMillis()));
 		b.append(", ");
 
-//		executeTime = Timer.getFPGATimestamp();		
+		wd.addEpoch("writeData start");	
 		for(Map.Entry<String, CSVLoggable> me : table.entrySet()){
-
 			value = ((CSVLoggable) me.getValue());
 			test = value.get();
 			b.append(test);
@@ -81,6 +83,7 @@ public class CSVLogger {
 			if (value.isSendToSmartDashboard() && (counter % SDUpdateRate == 0)) {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
 			}
+			wd.addEpoch("writeData" + me.getKey());
 		}
 //		executeTime = Timer.getFPGATimestamp() - executeTime;
 //		System.out.println("Log write time: " + executeTime);		
@@ -89,6 +92,10 @@ public class CSVLogger {
 		b.append("\r\n");
 		
 		loggerData.write(b.toString(), flush);
+		wd.addEpoch("writeData write");
+		wd.disable();
+		if (wd.isExpired())
+			wd.printEpochs();
 	}
 
 	public void writeData() {
