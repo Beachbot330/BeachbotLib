@@ -3,6 +3,7 @@ package org.usfirst.frc330.util;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc330.util.LoggerData;
 
@@ -56,13 +57,14 @@ public class CSVLogger {
 		
 	}
 	
-//	String data;
 	private int counter = 0;
 	CSVLoggable value;
 	StringBuilder b = new StringBuilder(1000);
 	double test;
-	public void writeData() {
-//		double executeTime=0;
+	Watchdog wd = new Watchdog(0.005, () -> {});
+
+	public void writeData(boolean flush) {
+		wd.reset();
 		b.setLength(0);
 		
 		counter++;
@@ -71,9 +73,8 @@ public class CSVLogger {
 		b.append(sdf_comma.format(System.currentTimeMillis()));
 		b.append(", ");
 
-//		executeTime = Timer.getFPGATimestamp();		
+		wd.addEpoch("writeData start");	
 		for(Map.Entry<String, CSVLoggable> me : table.entrySet()){
-
 			value = ((CSVLoggable) me.getValue());
 			test = value.get();
 			b.append(test);
@@ -81,14 +82,42 @@ public class CSVLogger {
 			if (value.isSendToSmartDashboard() && (counter % SDUpdateRate == 0)) {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
 			}
-		}
-//		executeTime = Timer.getFPGATimestamp() - executeTime;
-//		System.out.println("Log write time: " + executeTime);		
-
+			wd.addEpoch("writeData " + me.getKey());
+		}		
 		
 		b.append("\r\n");
 		
-		loggerData.write(b.toString());
+		loggerData.write(b.toString(), flush);
+		wd.addEpoch("writeData write");
+		wd.disable();
+		if (wd.isExpired() && printOnTimeout)
+			wd.printEpochs();
 	}
+
+	public void writeData() {
+		writeData(true);
+	}
+
+	/**
+	 * Sets how long the logging can take before printing the execution times
+	 * @param timeout the timeout in seconds
+	 */
+	public void setWatchdogTimeout(double timeout) {
+		wd.setTimeout(timeout);
+	}
+
+	boolean printOnTimeout = false;
+	/**
+	 * 
+	 * @param printOnTimeout true to print execution time if watchdog expires
+	 */
+	public void setPrintOnTimeout(boolean printOnTimeout) {
+		this.printOnTimeout = printOnTimeout;
+	}
+
+	public void printEpochs() {
+		wd.printEpochs();
+	}
+
 	
 }
