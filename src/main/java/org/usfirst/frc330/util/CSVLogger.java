@@ -57,7 +57,6 @@ public class CSVLogger {
 		
 	}
 	
-//	String data;
 	private int counter = 0;
 	CSVLoggable value;
 	StringBuilder b = new StringBuilder(1000);
@@ -84,22 +83,41 @@ public class CSVLogger {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
 			}
 			wd.addEpoch("writeData " + me.getKey());
-		}
-//		executeTime = Timer.getFPGATimestamp() - executeTime;
-//		System.out.println("Log write time: " + executeTime);		
-
+		}		
 		
 		b.append("\r\n");
 		
 		loggerData.write(b.toString(), flush);
 		wd.addEpoch("writeData write");
 		wd.disable();
-		//if (wd.isExpired())
+		if (wd.isExpired() && printOnTimeout)
 			wd.printEpochs();
 	}
 
 	public void writeData() {
 		writeData(true);
 	}
+
+	/**
+	 * Sets how long the logging can take before printing the execution times
+	 * @param timeout the timeout in seconds
+	 */
+	public void setWatchdogTimeout(double timeout) {
+		wd.setTimeout(timeout);
+	}
+
+	boolean printOnTimeout = false;
+	/**
+	 * 
+	 * @param printOnTimeout true to print execution time if watchdog expires
+	 */
+	public void setPrintOnTimeout(boolean printOnTimeout) {
+		this.printOnTimeout = printOnTimeout;
+	}
+
+	public void printEpochs() {
+		wd.printEpochs();
+	}
+
 	
 }
