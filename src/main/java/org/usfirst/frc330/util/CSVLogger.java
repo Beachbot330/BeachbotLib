@@ -10,6 +10,8 @@ import org.usfirst.frc330.util.LoggerData;
 public class CSVLogger {
 	private static CSVLogger instance = null;
 	private LoggerData loggerData;
+
+	private double kDefaultTimeout = 0.01;
 	
 	private LinkedHashMap<String,CSVLoggable> table;
 	
@@ -18,7 +20,6 @@ public class CSVLogger {
 	private java.text.SimpleDateFormat sdf_comma = new java.text.SimpleDateFormat("yyyy,MM,dd,HH,mm,ss,SSS");
 
 	boolean usbWorking = true;
-	
 	
 	private CSVLogger(String roboRIOPath, String usbPath, String filePrefix) {
 		table = new LinkedHashMap<String,CSVLoggable>();
@@ -43,6 +44,10 @@ public class CSVLogger {
 	public void add(String name, CSVLoggable data) {
 		if (table.containsKey(name))
 			throw new UnsupportedOperationException("CSVLogger key " + name + " already exists");
+		if (data.getShuffleboardTab() != null) {
+			data.setNetworkTableEntry(data.getShuffleboardTab().add(name, 0.0).getEntry());
+			//System.out.println("Adding SB entry: " + name+ " Tab: " + data.getShuffleboardTab().getTitle());
+		}
 		table.put(name, data);
 	}
 
@@ -61,7 +66,7 @@ public class CSVLogger {
 	CSVLoggable value;
 	StringBuilder b = new StringBuilder(1000);
 	double test;
-	Watchdog wd = new Watchdog(0.005, () -> {});
+	Watchdog wd = new Watchdog(kDefaultTimeout, () -> {});
 
 	public void writeData(boolean flush) {
 		wd.reset();
@@ -81,6 +86,10 @@ public class CSVLogger {
 			b.append(", ");
 			if (value.isSendToSmartDashboard() && (counter % SDUpdateRate == 0)) {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
+			}
+			if(value.getNetworkTableEntry() != null && (counter % SDUpdateRate == 0)) {
+				//System.out.println("setting SB: " + me.getKey());
+				value.getNetworkTableEntry().setDouble(value.get());
 			}
 			wd.addEpoch("writeData " + me.getKey());
 		}		
