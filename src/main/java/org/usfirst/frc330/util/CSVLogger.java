@@ -44,7 +44,8 @@ public class CSVLogger {
 	public void add(String name, CSVLoggable data) {
 		if (table.containsKey(name))
 			throw new UnsupportedOperationException("CSVLogger key " + name + " already exists");
-		data.setNetworkTableEntry(data.getShuffleboardTab().add(name, 0.0).getEntry());
+		if (data.getNetworkTableEntry() != null)
+			data.setNetworkTableEntry(data.getShuffleboardTab().add(name, 0.0).getEntry());
 		table.put(name, data);
 	}
 
