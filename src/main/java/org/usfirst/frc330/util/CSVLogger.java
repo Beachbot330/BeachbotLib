@@ -44,8 +44,10 @@ public class CSVLogger {
 	public void add(String name, CSVLoggable data) {
 		if (table.containsKey(name))
 			throw new UnsupportedOperationException("CSVLogger key " + name + " already exists");
-		if (data.getShuffleboardTab() != null)
+		if (data.getShuffleboardTab() != null) {
 			data.setNetworkTableEntry(data.getShuffleboardTab().add(name, 0.0).getEntry());
+			System.out.println("Adding SB entry: " + name+ " Tab: " + data.getShuffleboardTab().getTitle());
+		}
 		table.put(name, data);
 	}
 
@@ -86,6 +88,7 @@ public class CSVLogger {
 				SmartDashboard.putNumber((String)me.getKey(), value.get());
 			}
 			if(value.getNetworkTableEntry() != null && (counter % SDUpdateRate == 0)) {
+				System.out.println("setting SB: " + me.getKey());
 				value.getNetworkTableEntry().setDouble(value.get());
 			}
 			wd.addEpoch("writeData " + me.getKey());
