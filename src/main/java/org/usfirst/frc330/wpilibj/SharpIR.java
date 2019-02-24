@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * Class for interfacing with Sharp IR Analog distance Sensors, GP2Y0A51SK0F
- * (4-30cm range) or GP2Y0A41SK0F (2-15cm range). @link setCustomFactors(double, double)
+ * Class for interfacing with Sharp IR Analog distance Sensors, GP2Y0A41SK0F
+ * (4-30cm range) or GP2Y0A51SK0F (2-15cm range). @link setCustomFactors(double, double)
  * can be used to support other sensors.
  * 
  * @author Joe
@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 public class SharpIR extends SendableBase {
 	public enum SharpType {
 		/**
-		 * Represents the GP2Y0A51SK0F Sharp IR sensor which detects in the range 4-30cm
+		 * Represents the GP2Y0A41SK0F Sharp IR sensor which detects in the range 4-30cm
 		 */
-		GP2Y0A51SK0F,		/// 4-30cm
+		GP2Y0A41SK0F,		/// 4-30cm
 		/**
-		 * Represents the GP2Y0A41SK0F Sharp IR sensor which detects in the range 2-15cm
+		 * Represents the GP2Y0A51SK0F Sharp IR sensor which detects in the range 2-15cm
 		 */
-		GP2Y0A41SK0F		/// 2-15cm
+		GP2Y0A51SK0F		/// 2-15cm
 	}
 	
 	private final double GP2Y0A51SK0F_mul = 5.0585 / 2.54;
