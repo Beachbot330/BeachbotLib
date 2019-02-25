@@ -91,6 +91,7 @@ public class SharpIR extends SendableBase {
 	 * @deprecated use getDistance instead
 	 * @return the voltage read by the sensor
 	 */
+	@Deprecated
 	public double getVoltage() {
 		return input.getAverageVoltage();
 	}
