@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 /**
  *
  */
-public class POVButton extends Button {
+public class BBPOVButton extends Button {
     
 	private Joystick joy;
 	private int pov;
@@ -19,7 +19,7 @@ public class POVButton extends Button {
 	 * @param pov POV to use
 	 * @param dir the pov direction to trigger with
 	 */
-	public POVButton(Joystick joy, int pov, int dir) {
+	public BBPOVButton(Joystick joy, int pov, int dir) {
 		this.joy = joy;
 		this.pov = pov;
 		this.dir = dir;
@@ -27,7 +27,7 @@ public class POVButton extends Button {
 		this.alt2 = dir;
 	}
 	
-	public POVButton(Joystick joy, int pov, int dir, int alt1, int alt2) {
+	public BBPOVButton(Joystick joy, int pov, int dir, int alt1, int alt2) {
 		this.joy = joy;
 		this.pov = pov;
 		this.dir = dir;
