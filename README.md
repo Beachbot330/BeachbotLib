@@ -1,5 +1,5 @@
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#User/Repo)
+[![Release](https://jitpack.io/v/Beachbot330/BeachbotLib.svg)]
+(https://jitpack.io/#Beachbot330/BeachbotLib)
 
 # BeachbotLib
 Reusable library for team 330
