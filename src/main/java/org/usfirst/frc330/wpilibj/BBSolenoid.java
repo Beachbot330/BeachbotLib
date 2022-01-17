@@ -1,17 +1,18 @@
 package org.usfirst.frc330.wpilibj;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class BBSolenoid extends Solenoid {
 
 	boolean value;
-	public BBSolenoid(int moduleNumber, int channel) {
-		super(moduleNumber, channel);
+	public BBSolenoid(int moduleNumber, PneumaticsModuleType moduleType, int channel) {
+		super(moduleNumber, moduleType, channel);
 		value = get();
 	}
 
-	public BBSolenoid(int channel) {
-		super(channel);
+	public BBSolenoid(PneumaticsModuleType moduleType, int channel) {
+		super(moduleType, channel);
 		value = get();
 	}
 	

@@ -1,17 +1,18 @@
 package org.usfirst.frc330.wpilibj;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class BBDoubleSolenoid extends DoubleSolenoid {
 	DoubleSolenoid.Value value = Value.kOff;
-	public BBDoubleSolenoid(int moduleNumber, int forwardChannel,
+	public BBDoubleSolenoid(int moduleNumber, PneumaticsModuleType moduleType, int forwardChannel,
 			int reverseChannel) {
-		super(moduleNumber, forwardChannel, reverseChannel);
+		super(moduleNumber, moduleType, forwardChannel, reverseChannel);
 		value = get();
 	}
 
-	public BBDoubleSolenoid(int forwardChannel, int reverseChannel) {
-		super(forwardChannel, reverseChannel);
+	public BBDoubleSolenoid(PneumaticsModuleType moduleType, int forwardChannel, int reverseChannel) {
+		super(moduleType, forwardChannel, reverseChannel);
 		value = get();
 	}
 

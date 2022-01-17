@@ -6,8 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.PIDOutput;
 
-public class SpeedControllerGroup implements SpeedController{
+public class SpeedControllerGroup implements SpeedController, PIDOutput {
 
     private List<SpeedController> motors = new ArrayList<>();
     private List<Boolean> inverts = new ArrayList<>();

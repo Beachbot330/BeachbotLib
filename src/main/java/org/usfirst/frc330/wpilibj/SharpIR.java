@@ -1,8 +1,9 @@
 package org.usfirst.frc330.wpilibj;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.SendableBase;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 
 /**
  * Class for interfacing with Sharp IR Analog distance Sensors, GP2Y0A41SK0F
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * @author Joe
  *
  */
-public class SharpIR extends SendableBase {
+public class SharpIR implements Sendable {
 	public enum SharpType {
 		/**
 		 * Represents the GP2Y0A41SK0F Sharp IR sensor which detects in the range 4-30cm
