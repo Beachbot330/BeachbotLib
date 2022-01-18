@@ -1,8 +1,10 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id "edu.wpi.first.GradleRIO" version "2022.2.1"
 }
+
+group = 'com.github.beachbot330'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -27,3 +29,10 @@ artifacts {
     archives javadocJar
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
